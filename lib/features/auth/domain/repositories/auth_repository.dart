@@ -1,15 +1,12 @@
-import 'package:library_app/core/network/result.dart';
-import '../entities/auth_entity.dart';
+import '../entities/user_entity.dart';
 
 abstract class AuthRepository {
-  Future<AuthEntity> login({
-   required String email,
-   required String password
-});
+  Future<UserEntity> login({required String email, required String password});
 
-  Future<AuthEntity> register({
-   required String email,
-   required String password
-});
+  /// La API de registro solo pide email y password (sin nombre)
+  Future<UserEntity> register({required String email, required String password});
 
+  Future<void> logout();
+
+  UserEntity? getCurrentUser();
 }

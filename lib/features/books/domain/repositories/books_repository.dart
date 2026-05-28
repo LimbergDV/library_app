@@ -1,12 +1,10 @@
 import 'dart:io';
 import '../entities/book_entity.dart';
 
-/// Contrato del repositorio de libros.
+
 abstract class BooksRepository {
-  /// Obtiene todos los libros (GET /books).
   Future<List<BookEntity>> getBooks();
 
-  /// Crea un nuevo libro con imagen opcional (POST /books).
   Future<BookEntity> createBook({
     required String title,
     required String author,
@@ -16,7 +14,6 @@ abstract class BooksRepository {
     File? imageFile,
   });
 
-  /// Actualiza un libro existente (PUT /books).
   Future<BookEntity> updateBook({
     required String id,
     required String title,
@@ -27,6 +24,5 @@ abstract class BooksRepository {
     File? imageFile,
   });
 
-  /// Elimina un libro por ID (DELETE /books/{id}).
   Future<bool> deleteBook(String id);
 }

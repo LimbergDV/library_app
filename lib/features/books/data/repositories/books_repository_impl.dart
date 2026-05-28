@@ -3,8 +3,6 @@ import '../../domain/entities/book_entity.dart';
 import '../../domain/repositories/books_repository.dart';
 import '../datasources/books_remote_datasource.dart';
 
-/// Implementación concreta del repositorio de libros.
-/// Actúa como adaptador: convierte BookModel (data) → BookEntity (domain).
 class BooksRepositoryImpl implements BooksRepository {
   final BooksRemoteDatasource remoteDatasource;
 
@@ -13,7 +11,6 @@ class BooksRepositoryImpl implements BooksRepository {
   @override
   Future<List<BookEntity>> getBooks() async {
     final models = await remoteDatasource.getBooks();
-    // Los modelos extienden entidades, se puede retornar directamente
     return models;
   }
 

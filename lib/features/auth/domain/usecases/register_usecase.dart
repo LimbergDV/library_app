@@ -1,8 +1,6 @@
 import '../entities/user_entity.dart';
 import '../repositories/auth_repository.dart';
 
-/// Caso de uso: Registrar nuevo usuario.
-/// La API solo requiere email y password.
 class RegisterUseCase {
   final AuthRepository repository;
 

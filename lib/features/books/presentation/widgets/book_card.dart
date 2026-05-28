@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/book_entity.dart';
 
-/// Widget de tarjeta para mostrar un libro en el grid/lista.
-/// Utiliza Stack, gradientes y animaciones para diseño enriquecido.
 class BookCard extends StatelessWidget {
   final BookEntity book;
   final VoidCallback onEdit;
@@ -35,7 +33,6 @@ class BookCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            // ── Fondo degradado con el color del libro ──
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -48,7 +45,6 @@ class BookCard extends StatelessWidget {
                 ),
               ),
             ),
-            // ── Patrón decorativo de fondo ──
             Positioned(
               right: -20,
               top: -20,
@@ -73,7 +69,6 @@ class BookCard extends StatelessWidget {
                 ),
               ),
             ),
-            // ── Imagen del libro ──
             if (book.urlImage.isNotEmpty)
               Positioned.fill(
                 child: Image.network(
@@ -91,7 +86,6 @@ class BookCard extends StatelessWidget {
                   },
                 ),
               ),
-            // ── Gradiente sobre la imagen ──
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -107,14 +101,12 @@ class BookCard extends StatelessWidget {
                 ),
               ),
             ),
-            // ── Contenido principal ──
             Positioned.fill(
               child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Ícono libro
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -128,7 +120,6 @@ class BookCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    // Título
                     Text(
                       book.title,
                       style: TextStyle(
@@ -146,7 +137,6 @@ class BookCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-                    // Autor
                     Text(
                       book.author,
                       style: TextStyle(
@@ -157,7 +147,6 @@ class BookCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
-                    // Footer: páginas + acciones
                     Row(
                       children: [
                         Container(
@@ -189,14 +178,12 @@ class BookCard extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        // Botón editar
                         _ActionButton(
                           icon: Icons.edit_outlined,
                           onTap: onEdit,
                           tooltip: 'Editar',
                         ),
                         const SizedBox(width: 6),
-                        // Botón eliminar
                         _ActionButton(
                           icon: Icons.delete_outline,
                           onTap: onDelete,
@@ -216,7 +203,6 @@ class BookCard extends StatelessWidget {
   }
 }
 
-/// Botón de acción pequeño con efecto glassmorphism.
 class _ActionButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;

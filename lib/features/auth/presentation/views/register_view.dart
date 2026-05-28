@@ -3,8 +3,6 @@ import 'package:library_app/features/books/presentation/views/book_list_view.dar
 import 'package:provider/provider.dart';
 import '../viewmodels/auth_viewmodel.dart';
 
-
-/// Pantalla de registro. La API solo requiere email y password.
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -134,7 +132,6 @@ class _RegisterViewState extends State<RegisterView>
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  // Email
                                   TextFormField(
                                     controller: _emailController,
                                     keyboardType: TextInputType.emailAddress,
@@ -150,7 +147,6 @@ class _RegisterViewState extends State<RegisterView>
                                     },
                                   ),
                                   const SizedBox(height: 16),
-                                  // Contraseña
                                   TextFormField(
                                     controller: _passwordController,
                                     obscureText: _obscurePassword,

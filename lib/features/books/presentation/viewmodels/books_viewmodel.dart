@@ -33,7 +33,6 @@ class BooksViewModel extends ChangeNotifier {
   bool get isLoading => _status == BooksStatus.loading;
   bool get isSubmitting => _isSubmitting;
 
-  // GET
   Future<void> loadBooks() async {
     debugPrint('[BooksVM] loadBooks() iniciado');
     _setStatus(BooksStatus.loading);
@@ -48,7 +47,6 @@ class BooksViewModel extends ChangeNotifier {
     }
   }
 
-  // POST
   Future<bool> createBook({
     required String title,
     required String author,
@@ -84,7 +82,6 @@ class BooksViewModel extends ChangeNotifier {
     }
   }
 
-  // PUT
   Future<bool> updateBook({
     required String id,
     required String title,
@@ -126,7 +123,6 @@ class BooksViewModel extends ChangeNotifier {
     }
   }
 
-  // DELETE
   Future<bool> deleteBook(String id) async {
     debugPrint('[BooksVM] deleteBook() iniciado — id: $id');
     _isSubmitting = true;

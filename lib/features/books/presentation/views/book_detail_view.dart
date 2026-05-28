@@ -5,8 +5,7 @@ import '../../domain/entities/book_entity.dart';
 import '../viewmodels/books_viewmodel.dart';
 import '../widgets/book_form.dart';
 
-/// Pantalla de detalle de un libro.
-/// Muestra información completa con diseño visual enriquecido.
+
 class BookDetailView extends StatelessWidget {
   final BookEntity book;
 
@@ -20,7 +19,6 @@ class BookDetailView extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          // ── SliverAppBar con imagen/color del libro ──────
           SliverAppBar(
             expandedHeight: 280,
             pinned: true,
@@ -52,7 +50,6 @@ class BookDetailView extends StatelessWidget {
               background: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Fondo de color/imagen
                   book.urlImage.isNotEmpty
                       ? Image.network(
                     book.urlImage,
@@ -61,7 +58,6 @@ class BookDetailView extends StatelessWidget {
                         _ColorBackground(color: bookColor),
                   )
                       : _ColorBackground(color: bookColor),
-                  // Gradiente oscuro abajo
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -75,7 +71,6 @@ class BookDetailView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Ícono del libro centrado
                   if (book.urlImage.isEmpty)
                     Center(
                       child: Icon(
@@ -89,14 +84,12 @@ class BookDetailView extends StatelessWidget {
             ),
           ),
 
-          // ── Información del libro ────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Título y badge de color
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -138,7 +131,6 @@ class BookDetailView extends StatelessWidget {
                   // Divider
                   Divider(color: Colors.grey.shade200),
                   const SizedBox(height: 16),
-                  // Tarjetas de info
                   Row(
                     children: [
                       Expanded(
@@ -163,7 +155,6 @@ class BookDetailView extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 32),
-                  // Botones de acción
                   Row(
                     children: [
                       Expanded(

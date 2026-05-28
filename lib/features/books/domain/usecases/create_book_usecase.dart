@@ -2,7 +2,6 @@ import 'dart:io';
 import '../entities/book_entity.dart';
 import '../repositories/books_repository.dart';
 
-/// Caso de uso: Crear libro (POST).
 class CreateBookUseCase {
   final BooksRepository repository;
   const CreateBookUseCase({required this.repository});
@@ -15,7 +14,6 @@ class CreateBookUseCase {
     required String backgroundColor,
     File? imageFile,
   }) {
-    // Validaciones de dominio
     if (title.trim().isEmpty) throw Exception('El título es requerido');
     if (author.trim().isEmpty) throw Exception('El autor es requerido');
     if (editorial.trim().isEmpty) throw Exception('La editorial es requerida');

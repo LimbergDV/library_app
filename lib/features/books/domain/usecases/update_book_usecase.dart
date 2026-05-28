@@ -4,7 +4,6 @@ import 'dart:io';
 import '../entities/book_entity.dart';
 import '../repositories/books_repository.dart';
 
-/// Caso de uso: Actualizar libro (PUT).
 class UpdateBookUseCase {
   final BooksRepository repository;
   const UpdateBookUseCase({required this.repository});

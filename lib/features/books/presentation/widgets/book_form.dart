@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../domain/entities/book_entity.dart';
 
-/// Formulario reutilizable para crear y editar libros.
-/// Incluye selector de imagen obligatorio (requerido por la API).
 class BookForm extends StatefulWidget {
   final BookEntity? book;
   final Future<bool> Function({
@@ -68,7 +66,6 @@ class _BookFormState extends State<BookForm> {
     super.dispose();
   }
 
-  // ── Selector de imagen ────────────────────────────────────
   Future<void> _pickImage(ImageSource source) async {
     try {
       final picked = await _imagePicker.pickImage(
@@ -135,11 +132,9 @@ class _BookFormState extends State<BookForm> {
     );
   }
 
-  // ── Submit ────────────────────────────────────────────────
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
-    // La imagen es obligatoria al crear
     if (!_isEditing && _selectedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -184,7 +179,6 @@ class _BookFormState extends State<BookForm> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // ── Header ───────────────────────────────────
             Row(
               children: [
                 Container(
@@ -215,8 +209,6 @@ class _BookFormState extends State<BookForm> {
             const SizedBox(height: 16),
             const Divider(),
             const SizedBox(height: 12),
-
-            // ── Selector de imagen ────────────────────────
             GestureDetector(
               onTap: _showImageSourceSheet,
               child: Container(
@@ -306,7 +298,6 @@ class _BookFormState extends State<BookForm> {
             ),
             const SizedBox(height: 16),
 
-            // ── Campos del formulario ─────────────────────
             TextFormField(
               controller: _titleController,
               textInputAction: TextInputAction.next,
@@ -361,8 +352,6 @@ class _BookFormState extends State<BookForm> {
               },
             ),
             const SizedBox(height: 16),
-
-            // ── Selector de color ─────────────────────────
             Text(
               'Color de portada',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -405,7 +394,6 @@ class _BookFormState extends State<BookForm> {
             ),
             const SizedBox(height: 24),
 
-            // ── Botón submit ──────────────────────────────
             ElevatedButton.icon(
               onPressed: _isSubmitting ? null : _submit,
               style: ElevatedButton.styleFrom(

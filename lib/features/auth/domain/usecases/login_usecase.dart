@@ -1,19 +1,15 @@
 import '../entities/user_entity.dart';
 import '../repositories/auth_repository.dart';
 
-/// Caso de uso: Iniciar sesión.
-/// Encapsula la lógica de negocio de autenticación.
 class LoginUseCase {
   final AuthRepository repository;
 
   const LoginUseCase({required this.repository});
 
-  /// Ejecuta el caso de uso con las credenciales proporcionadas.
   Future<UserEntity> call({
     required String email,
     required String password,
   }) async {
-    // Validaciones de dominio
     if (email.trim().isEmpty) {
       throw Exception('El correo electrónico es requerido');
     }

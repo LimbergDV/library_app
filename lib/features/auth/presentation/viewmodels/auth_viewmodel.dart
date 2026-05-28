@@ -35,7 +35,6 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  /// Registro: la API solo pide email y password (sin nombre)
   Future<bool> register({
     required String email,
     required String password,

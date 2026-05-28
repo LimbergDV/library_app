@@ -19,8 +19,6 @@ class BookEntity {
     required this.backgroundColor,
   });
 
-  /// Retorna el color de fondo como un valor hexadecimal entero.
-  /// Soporta nombres CSS básicos y valores hex.
   int get backgroundColorValue {
     final colorMap = {
       'red': 0xFFE53E3E,
@@ -41,13 +39,12 @@ class BookEntity {
     final lower = backgroundColor.toLowerCase().trim();
     if (colorMap.containsKey(lower)) return colorMap[lower]!;
 
-    // Intentar parsear como hex
     try {
       final hex = lower.replaceAll('#', '');
       if (hex.length == 6) return int.parse('FF$hex', radix: 16);
       if (hex.length == 8) return int.parse(hex, radix: 16);
     } catch (_) {}
 
-    return 0xFF4A6CF7; // Color por defecto
+    return 0xFF4A6CF7;
   }
 }

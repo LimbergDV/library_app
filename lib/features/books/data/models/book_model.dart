@@ -1,7 +1,5 @@
 import '../../domain/entities/book_entity.dart';
 
-/// Modelo de datos para Libro.
-/// Añade fromJson/toJson a la entidad de dominio.
 class BookModel extends BookEntity {
   const BookModel({
     required super.id,
@@ -26,7 +24,6 @@ class BookModel extends BookEntity {
     );
   }
 
-  /// Serializa los campos principales a JSON (sin imagen).
   Map<String, dynamic> toJson() => {
     'id': id,
     'title': title,
@@ -36,8 +33,6 @@ class BookModel extends BookEntity {
     'backgroundColor': backgroundColor,
   };
 
-  /// Serializa solo los campos que se envían al crear/actualizar
-  /// (sin id ni urlImage, que los gestiona el servidor).
   Map<String, dynamic> toRequestJson() => {
     'title': title,
     'author': author,

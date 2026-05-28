@@ -236,31 +236,6 @@ class _LoginViewState extends State<LoginView>
                 },
               ),
               const SizedBox(height: 8),
-              // Hint de credenciales demo
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline,
-                        size: 14, color: colorScheme.primary),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Demo: admin@books.com / 123456',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               const SizedBox(height: 24),
               // Mensaje de error
               Consumer<AuthViewModel>(

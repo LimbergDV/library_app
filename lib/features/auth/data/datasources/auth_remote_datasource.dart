@@ -1,9 +1,6 @@
 import '../../../../core/network/api_client.dart';
 import '../models/user_model.dart';
 
-/// DataSource remoto para autenticación.
-/// Tras un login exitoso, inyecta el token en el ApiClient
-/// para que todas las peticiones posteriores lo incluyan.
 class AuthRemoteDatasource {
   final ApiClient apiClient;
 
@@ -11,7 +8,6 @@ class AuthRemoteDatasource {
 
   AuthRemoteDatasource({required this.apiClient});
 
-  // POST /auth/login
   Future<UserModel> login({
     required String email,
     required String password,
@@ -29,7 +25,6 @@ class AuthRemoteDatasource {
     final data = response['data'] as Map<String, dynamic>;
     final token = data['token'] as String? ?? '';
 
-    // ✅ Inyectar el token en el cliente HTTP compartido
     apiClient.authToken = token;
 
     final user = UserModel.fromLoginJson(token: token, email: email);
@@ -37,7 +32,6 @@ class AuthRemoteDatasource {
     return user;
   }
 
-  // POST /users
   Future<UserModel> register({
     required String email,
     required String password,
@@ -59,7 +53,6 @@ class AuthRemoteDatasource {
   }
 
   Future<void> logout() async {
-    // Limpiar token al cerrar sesión
     apiClient.authToken = null;
     _currentUser = null;
   }

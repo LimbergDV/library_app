@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 /// Se establecen colores, tipografías y estilos globales consistentes.
 class AppTheme {
   // Paleta de colores principal
-  static const Color _primaryColor = Color(0xFF4A6CF7);
-  static const Color _secondaryColor = Color(0xFF7C3AED);
-  static const Color _errorColor = Color(0xFFE53E3E);
-  static const Color _surfaceColor = Color(0xFFF8FAFF);
+  static const Color _primaryColor = Color(0xFF037164);
+  static const Color _secondaryColor = Color(0xFF037164);
+  static const Color _errorColor = Color(0xFFFF0000);
+  static const Color _surfaceColor = Color(0xFF037164);
 
   // Paleta oscura
-  static const Color _darkSurface = Color(0xFF1A1A2E);
-  static const Color _darkBackground = Color(0xFF0F0F23);
+  static const Color _darkSurface = Color(0xFF000000);
+  static const Color _darkBackground = Color(0xFF01231F);
 
   /// Tema claro con Material 3
   static ThemeData get lightTheme {

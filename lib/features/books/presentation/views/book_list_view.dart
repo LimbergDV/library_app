@@ -9,8 +9,6 @@ import '../../../auth/presentation/viewmodels/auth_viewmodel.dart';
 import '../../../auth/presentation/views/login_view.dart';
 import 'book_detail_view.dart';
 
-/// Pantalla principal: lista/grid de libros con CRUD completo.
-/// Usa CustomScrollView + SliverAppBar para efecto de scroll enriquecido.
 class BooksListView extends StatefulWidget {
   const BooksListView({super.key});
 
@@ -26,7 +24,6 @@ class _BooksListViewState extends State<BooksListView> {
   @override
   void initState() {
     super.initState();
-    // Cargar libros al iniciar (después del primer frame)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<BooksViewModel>().loadBooks();
     });
@@ -38,9 +35,6 @@ class _BooksListViewState extends State<BooksListView> {
     super.dispose();
   }
 
-  // ─────────────────────────────────────────────────────────
-  // Abrir formulario de creación
-  // ─────────────────────────────────────────────────────────
   void _showCreateForm(BuildContext context) {
     final vm = context.read<BooksViewModel>();
     showModalBottomSheet(
@@ -71,9 +65,6 @@ class _BooksListViewState extends State<BooksListView> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────
-  // Abrir formulario de edición
-  // ─────────────────────────────────────────────────────────
   void _showEditForm(BuildContext context, BookEntity book) {
     final vm = context.read<BooksViewModel>();
     showModalBottomSheet(
@@ -106,9 +97,6 @@ class _BooksListViewState extends State<BooksListView> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────
-  // Confirmar y ejecutar eliminación
-  // ─────────────────────────────────────────────────────────
   void _confirmDelete(BuildContext context, BookEntity book) {
     final colorScheme = Theme.of(context).colorScheme;
     showDialog(
@@ -198,7 +186,6 @@ class _BooksListViewState extends State<BooksListView> {
       backgroundColor: colorScheme.surface,
       body: CustomScrollView(
         slivers: [
-          // ── SliverAppBar con gradiente ──────────────────
           SliverAppBar(
             expandedHeight: 160,
             pinned: true,
@@ -215,7 +202,7 @@ class _BooksListViewState extends State<BooksListView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hola, ${authVm.currentUser?.email.split('@').first ?? 'Usuario'} 👋',
+                          'Hola, ${authVm.currentUser?.email.split('@').first ?? 'Usuario'} ',
                           style: const TextStyle(
                             fontSize: 11,
                             color: Colors.white70,
@@ -233,7 +220,6 @@ class _BooksListViewState extends State<BooksListView> {
                       ],
                     ),
                   ),
-                  // Toggle grid/lista
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -296,7 +282,6 @@ class _BooksListViewState extends State<BooksListView> {
             ),
           ),
 
-          // ── Barra de búsqueda ────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -320,7 +305,6 @@ class _BooksListViewState extends State<BooksListView> {
             ),
           ),
 
-          // ── Contador de resultados ───────────────────────
           Consumer<BooksViewModel>(
             builder: (_, vm, __) {
               final filtered = vm.searchBooks(_searchQuery);
@@ -354,17 +338,14 @@ class _BooksListViewState extends State<BooksListView> {
             },
           ),
 
-          // ── Contenido principal ──────────────────────────
           Consumer<BooksViewModel>(
             builder: (_, vm, __) {
-              // Cargando
               if (vm.isLoading) {
                 return const SliverFillRemaining(
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
 
-              // Error
               if (vm.status == BooksStatus.error && vm.books.isEmpty) {
                 return SliverFillRemaining(
                   child: _ErrorWidget(
@@ -376,7 +357,6 @@ class _BooksListViewState extends State<BooksListView> {
 
               final books = vm.searchBooks(_searchQuery);
 
-              // Sin resultados
               if (books.isEmpty) {
                 return SliverFillRemaining(
                   child: _EmptyWidget(
@@ -386,7 +366,6 @@ class _BooksListViewState extends State<BooksListView> {
                 );
               }
 
-              // Grid o Lista
               if (_isGridView) {
                 return SliverPadding(
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
@@ -418,7 +397,6 @@ class _BooksListViewState extends State<BooksListView> {
                 );
               }
 
-              // ListView
               return SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
                 sliver: SliverList(
@@ -443,7 +421,6 @@ class _BooksListViewState extends State<BooksListView> {
         ],
       ),
 
-      // ── FAB para crear libro ───────────────────────────
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showCreateForm(context),
         icon: const Icon(Icons.add),
@@ -454,8 +431,6 @@ class _BooksListViewState extends State<BooksListView> {
     );
   }
 }
-
-// ─── Widgets auxiliares ────────────────────────────────────
 
 class _AppBarIconButton extends StatelessWidget {
   final IconData icon;

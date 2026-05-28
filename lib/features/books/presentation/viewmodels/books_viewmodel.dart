@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../domain/entities/book_entity.dart';
 import '../../domain/usecases/create_book_usecase.dart';
@@ -6,13 +7,8 @@ import '../../domain/usecases/delete_book_usecase.dart';
 import '../../domain/usecases/get_book_usecase.dart';
 import '../../domain/usecases/update_book_usecase.dart';
 
-
-/// Estados del ViewModel de libros.
 enum BooksStatus { idle, loading, success, error }
 
-/// ViewModel del CRUD de libros.
-/// Gestiona el estado reactivo con Provider (ChangeNotifier).
-/// Desacopla completamente la vista de la lógica de negocio.
 class BooksViewModel extends ChangeNotifier {
   final GetBooksUseCase getBooksUseCase;
   final CreateBookUseCase createBookUseCase;
@@ -26,37 +22,33 @@ class BooksViewModel extends ChangeNotifier {
     required this.deleteBookUseCase,
   });
 
-  // ─── Estado reactivo ──────────────────────────────────────
   BooksStatus _status = BooksStatus.idle;
   List<BookEntity> _books = [];
   String? _errorMessage;
   bool _isSubmitting = false;
 
-  // ─── Getters públicos ─────────────────────────────────────
   BooksStatus get status => _status;
   List<BookEntity> get books => List.unmodifiable(_books);
   String? get errorMessage => _errorMessage;
   bool get isLoading => _status == BooksStatus.loading;
   bool get isSubmitting => _isSubmitting;
 
-  // ─────────────────────────────────────────────────────────
-  // GET - Cargar libros
-  // ─────────────────────────────────────────────────────────
+  // GET
   Future<void> loadBooks() async {
+    debugPrint('[BooksVM] loadBooks() iniciado');
     _setStatus(BooksStatus.loading);
     _clearError();
-
     try {
       _books = await getBooksUseCase();
+      debugPrint('[BooksVM] loadBooks() OK — ${_books.length} libros');
       _setStatus(BooksStatus.success);
     } catch (e) {
+      debugPrint('[BooksVM] loadBooks() ERROR: $e');
       _setError(e.toString().replaceAll('Exception: ', ''));
     }
   }
 
-  // ─────────────────────────────────────────────────────────
-  // POST - Crear libro
-  // ─────────────────────────────────────────────────────────
+  // POST
   Future<bool> createBook({
     required String title,
     required String author,
@@ -65,6 +57,7 @@ class BooksViewModel extends ChangeNotifier {
     required String backgroundColor,
     File? imageFile,
   }) async {
+    debugPrint('[BooksVM] createBook() iniciado — title: $title');
     _isSubmitting = true;
     _clearError();
     notifyListeners();
@@ -78,21 +71,20 @@ class BooksViewModel extends ChangeNotifier {
         backgroundColor: backgroundColor,
         imageFile: imageFile,
       );
-      // Actualización optimista: agregar al inicio de la lista
+      debugPrint('[BooksVM] createBook() OK — id: ${newBook.id}');
       _books = [newBook, ..._books];
       _isSubmitting = false;
       notifyListeners();
       return true;
     } catch (e) {
+      debugPrint('[BooksVM] createBook() ERROR: $e');
       _isSubmitting = false;
       _setError(e.toString().replaceAll('Exception: ', ''));
       return false;
     }
   }
 
-  // ─────────────────────────────────────────────────────────
-  // PUT - Actualizar libro
-  // ─────────────────────────────────────────────────────────
+  // PUT
   Future<bool> updateBook({
     required String id,
     required String title,
@@ -102,6 +94,7 @@ class BooksViewModel extends ChangeNotifier {
     required String backgroundColor,
     File? imageFile,
   }) async {
+    debugPrint('[BooksVM] updateBook() iniciado — id: $id, title: $title');
     _isSubmitting = true;
     _clearError();
     notifyListeners();
@@ -116,7 +109,7 @@ class BooksViewModel extends ChangeNotifier {
         backgroundColor: backgroundColor,
         imageFile: imageFile,
       );
-      // Actualizar en la lista local
+      debugPrint('[BooksVM] updateBook() OK — id: ${updatedBook.id}');
       final index = _books.indexWhere((b) => b.id == id);
       if (index != -1) {
         _books = [..._books];
@@ -126,35 +119,35 @@ class BooksViewModel extends ChangeNotifier {
       notifyListeners();
       return true;
     } catch (e) {
+      debugPrint('[BooksVM] updateBook() ERROR: $e');
       _isSubmitting = false;
       _setError(e.toString().replaceAll('Exception: ', ''));
       return false;
     }
   }
 
-  // ─────────────────────────────────────────────────────────
-  // DELETE - Eliminar libro
-  // ─────────────────────────────────────────────────────────
+  // DELETE
   Future<bool> deleteBook(String id) async {
+    debugPrint('[BooksVM] deleteBook() iniciado — id: $id');
     _isSubmitting = true;
     _clearError();
     notifyListeners();
 
     try {
       await deleteBookUseCase(id);
-      // Remover de la lista local
+      debugPrint('[BooksVM] deleteBook() OK');
       _books = _books.where((b) => b.id != id).toList();
       _isSubmitting = false;
       notifyListeners();
       return true;
     } catch (e) {
+      debugPrint('[BooksVM] deleteBook() ERROR: $e');
       _isSubmitting = false;
       _setError(e.toString().replaceAll('Exception: ', ''));
       return false;
     }
   }
 
-  // ─── Búsqueda local ───────────────────────────────────────
   List<BookEntity> searchBooks(String query) {
     if (query.trim().isEmpty) return books;
     final q = query.toLowerCase();
@@ -165,7 +158,6 @@ class BooksViewModel extends ChangeNotifier {
     }).toList();
   }
 
-  // ─── Helpers privados ─────────────────────────────────────
   void _setStatus(BooksStatus newStatus) {
     _status = newStatus;
     notifyListeners();

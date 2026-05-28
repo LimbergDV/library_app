@@ -19,9 +19,6 @@ class BooksRemoteDatasource {
   }
 
   // POST /books
-  // Si hay imagen → multipart/form-data con campos "book" e "image"
-  // Si no hay imagen → multipart/form-data con solo el campo "book"
-  // (el servidor siempre espera multipart según la documentación)
   Future<BookModel> createBook({
     required String title,
     required String author,
@@ -40,7 +37,7 @@ class BooksRemoteDatasource {
 
     final response = await apiClient.postMultipart(
       '/books',
-      fields: {'book': bookJson},
+      jsonParts: {'book': bookJson},
       imageFile: imageFile,
       imageFieldName: 'image',
     );
@@ -71,7 +68,7 @@ class BooksRemoteDatasource {
 
     final response = await apiClient.putMultipart(
       '/books',
-      fields: {'book': bookJson},
+      jsonParts: {'book': bookJson},
       imageFile: imageFile,
       imageFieldName: 'image',
     );

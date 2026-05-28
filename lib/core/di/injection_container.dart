@@ -1,16 +1,15 @@
-import 'package:library_app/features/auth/data/repositories/auth_repositoy_impl.dart';
-
-import '../../features/books/domain/usecases/create_book_usecase.dart';
-import '../../features/books/domain/usecases/delete_book_usecase.dart';
-import '../../features/books/domain/usecases/get_book_usecase.dart';
-import '../../features/books/domain/usecases/update_book_usecase.dart';
 import '../network/api_client.dart';
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
+import '../../features/auth/data/repositories/auth_repositoy_impl.dart';
 import '../../features/auth/domain/usecases/login_usecase.dart';
 import '../../features/auth/domain/usecases/register_usecase.dart';
 import '../../features/auth/presentation/viewmodels/auth_viewmodel.dart';
 import '../../features/books/data/datasources/books_remote_datasource.dart';
 import '../../features/books/data/repositories/books_repository_impl.dart';
+import '../../features/books/domain/usecases/get_book_usecase.dart';
+import '../../features/books/domain/usecases/create_book_usecase.dart';
+import '../../features/books/domain/usecases/update_book_usecase.dart';
+import '../../features/books/domain/usecases/delete_book_usecase.dart';
 import '../../features/books/presentation/viewmodels/books_viewmodel.dart';
 
 /// Contenedor de inyección de dependencias manual.
@@ -32,18 +31,14 @@ class InjectionContainer {
   late BooksViewModel booksViewModel;
 
   void init() {
-    // 1. Red (compartido entre features)
     _apiClient = ApiClient(baseUrl: 'https://api.aleosh.online');
 
-    // 2. DataSources remotos
     _authRemoteDatasource = AuthRemoteDatasource(apiClient: _apiClient);
     _booksRemoteDatasource = BooksRemoteDatasource(apiClient: _apiClient);
 
-    // 3. Repositories
     _authRepository = AuthRepositoryImpl(remoteDatasource: _authRemoteDatasource);
     _booksRepository = BooksRepositoryImpl(remoteDatasource: _booksRemoteDatasource);
 
-    // 4. Use Cases
     _loginUseCase = LoginUseCase(repository: _authRepository);
     _registerUseCase = RegisterUseCase(repository: _authRepository);
     _getBooksUseCase = GetBooksUseCase(repository: _booksRepository);
@@ -51,7 +46,6 @@ class InjectionContainer {
     _updateBookUseCase = UpdateBookUseCase(repository: _booksRepository);
     _deleteBookUseCase = DeleteBookUseCase(repository: _booksRepository);
 
-    // 5. ViewModels
     authViewModel = AuthViewModel(
       loginUseCase: _loginUseCase,
       registerUseCase: _registerUseCase,

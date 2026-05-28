@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class ApiClient {
   final http.Client _client;
@@ -57,28 +58,36 @@ class ApiClient {
   }
 
   /// Envía multipart/form-data.
-  /// Cuando no hay imagen se agrega un campo de bytes vacío para que
-  /// el servidor reciba siempre el Content-Type correcto.
   Future<Map<String, dynamic>> postMultipart(
       String endpoint, {
-        required Map<String, String> fields,
+        Map<String, String> fields = const {},
+        Map<String, String> jsonParts = const {},
         File? imageFile,
         String imageFieldName = 'image',
       }) async {
     try {
       final uri = Uri.parse('$baseUrl$endpoint');
-      debugPrint('>>> POST multipart $uri fields: $fields hasImage: ${imageFile != null}');
+      debugPrint('>>> POST multipart $uri fields: $fields jsonParts: $jsonParts hasImage: ${imageFile != null}');
       final request = http.MultipartRequest('POST', uri)
         ..headers.addAll(_authHeader)
         ..fields.addAll(fields);
+
+      // Agregamos las partes JSON especificando explícitamente el Content-Type application/json
+      jsonParts.forEach((key, value) {
+        request.files.add(
+          http.MultipartFile.fromString(
+            key,
+            value,
+            contentType: MediaType('application', 'json'),
+          ),
+        );
+      });
 
       if (imageFile != null) {
         request.files.add(
           await http.MultipartFile.fromPath(imageFieldName, imageFile.path),
         );
       }
-      // Sin imagen: no agregamos nada extra — el multipart con solo
-      // fields ya tiene el Content-Type correcto automáticamente.
 
       final streamed = await request.send().timeout(const Duration(seconds: 60));
       final response = await http.Response.fromStream(streamed);
@@ -93,16 +102,28 @@ class ApiClient {
 
   Future<Map<String, dynamic>> putMultipart(
       String endpoint, {
-        required Map<String, String> fields,
+        Map<String, String> fields = const {},
+        Map<String, String> jsonParts = const {},
         File? imageFile,
         String imageFieldName = 'image',
       }) async {
     try {
       final uri = Uri.parse('$baseUrl$endpoint');
-      debugPrint('>>> PUT multipart $uri fields: $fields hasImage: ${imageFile != null}');
+      debugPrint('>>> PUT multipart $uri fields: $fields jsonParts: $jsonParts hasImage: ${imageFile != null}');
       final request = http.MultipartRequest('PUT', uri)
         ..headers.addAll(_authHeader)
         ..fields.addAll(fields);
+
+      // Agregamos las partes JSON especificando explícitamente el Content-Type application/json
+      jsonParts.forEach((key, value) {
+        request.files.add(
+          http.MultipartFile.fromString(
+            key,
+            value,
+            contentType: MediaType('application', 'json'),
+          ),
+        );
+      });
 
       if (imageFile != null) {
         request.files.add(
